@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OneKeyToWin_AIO_Sebby")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Mask & ajvavjuhani")]
+[assembly: AssemblyCompany("ajvavjuhani")]
 [assembly: AssemblyProduct("OneKeyToWin_AIO_Sebby")]
 [assembly: AssemblyCopyright("Copyright ©  OneKeyToWin_AIO_Sebby 2019")]
 [assembly: AssemblyTrademark("")]
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.0.3")]
-[assembly: AssemblyFileVersion("1.0.0.3")]
+[assembly: AssemblyVersion("1.1")]
+[assembly: AssemblyFileVersion("1.1")]
