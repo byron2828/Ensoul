@@ -118,11 +118,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            //if ( (int)(Game.Time * 10) % 2 == 0)
-            //{
+            if ( (int)(Game.Time * 10) % 2 == 0)
+            {
                 //Console.WriteLine("chaneling");
                 //Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPosRaw);
-            //}
+            }
 
             if (R1.IsReady() && Game.Time - castR > 5 && Config[Player.CharacterName]["RConfig"].GetValue<MenuKeyBind>("useR").Active)
             {
@@ -140,7 +140,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
             if (LagFree(1) && Q.IsReady() && !passRdy && !SpellLock )
                 LogicQ();
-            if (LagFree(2) && W.IsReady() && !passRdy && !SpellLock && Config[Player.CharacterName]["WCongig"].GetValue<MenuBool>("autoW").Enabled)
+            if (LagFree(2) && W.IsReady() && !passRdy && !SpellLock && Config[Player.CharacterName]["WConfig"].GetValue<MenuBool>("autoW").Enabled)
                 LogicW();
             if (LagFree(3) && E.IsReady() )
                 LogicE();
@@ -212,8 +212,10 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 var wDmg = W.GetDamage(t);
                 if (t.IsValidTarget(W.Range) && qDmg + wDmg > t.Health)
                     CastSpell(W, t);
+                
                 else if (Combo && Player.Mana > RMANA + QMANA * 2 + WMANA)
                     CastSpell(W, t);
+
                 else if ((Harass && Player.Mana > RMANA + EMANA + QMANA * 2 + WMANA) && !Player.IsUnderEnemyTurret())
                     CastSpell(W, t);
                 else if ((Combo || Harass) && Player.Mana > RMANA + QMANA + EMANA)
