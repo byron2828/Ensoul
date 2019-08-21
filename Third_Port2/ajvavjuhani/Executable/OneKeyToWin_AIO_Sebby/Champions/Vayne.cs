@@ -16,7 +16,7 @@ using SharpDX;
 using Menu = EnsoulSharp.SDK.MenuUI.Menu;
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
-    class Vayne : Program
+    class Vaynee : Program
     {
         public static Core.OKTWdash Dash;
 
