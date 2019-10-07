@@ -5,10 +5,12 @@ using EnsoulSharp.SDK;
 using EnsoulSharp.SDK.MenuUI.Values;
 using EnsoulSharp.SDK.Prediction;
 using EnsoulSharp.SDK.Utility;
-using SharpDX;
+
 using SebbyLib;
+
+using SharpDX;
+
 using Menu = EnsoulSharp.SDK.MenuUI.Menu;
- 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
     class Quinn : Program
@@ -26,67 +28,131 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             var wrapper = new Menu(Player.CharacterName, Player.CharacterName);
 
             var draw = new Menu("draw", "Draw");
-            draw.Add(new MenuBool("noti", "Show notification & line", false, Player.CharacterName));
-            draw.Add(new MenuBool("qRange", "Q range", false, Player.CharacterName));
-            draw.Add(new MenuBool("wRange", "W range", false, Player.CharacterName));
-            draw.Add(new MenuBool("eRange", "E range", false, Player.CharacterName));
+            draw.Add(new MenuBool("noti", "Show notification & line", true, Player.CharacterName));
+            draw.Add(new MenuBool("qRange", "Q range", true, Player.CharacterName));
+            draw.Add(new MenuBool("wRange", "W range", true, Player.CharacterName));
+            draw.Add(new MenuBool("eRange", "E range", true, Player.CharacterName));
             draw.Add(new MenuBool("onlyRdy", "Draw only ready spells", true, Player.CharacterName));
             wrapper.Add(draw);
-	        
-			var q = new Menu("QConfig", "Q Config");
+
+            var q = new Menu("QConfig", "Q Config");
             q.Add(new MenuBool("autoQ", "Auto Q", true, Player.CharacterName));
             q.Add(new MenuBool("harassQ", "Harass Q", true, Player.CharacterName));
-			wrapper.Add(q);
-			
-			var e = new Menu("EConfig", "E Config");
+            wrapper.Add(q);
+
+            var e = new Menu("EConfig", "E Config");
             e.Add(new MenuBool("autoE", "Auto E", true, Player.CharacterName));
             e.Add(new MenuBool("harassE", "Harass E", true, Player.CharacterName));
-            e.Add(new MenuBool("AGC", "AntiGapcloserE", true, Player.CharacterName));
+            e.Add(new MenuBool("AGC", "AntiGapcloser E", true, Player.CharacterName));
             e.Add(new MenuBool("Int", "Interrupter E", true, Player.CharacterName));
-			
+            var egap = new Menu("egap", "E Gap Closer");
             foreach (var enemy in GameObjects.EnemyHeroes)
-              e.Add(new MenuBool("GapCloser", "gap" + enemy.CharacterName, true, Player.CharacterName));
-			  wrapper.Add(e);
-			  
-			  var w = new Menu("WConfig", "W Config");
+                egap.Add(new MenuBool("gap" + enemy.CharacterName, enemy.CharacterName, true, Player.CharacterName));
+            e.Add(egap);
+            wrapper.Add(e);
+
+            var w = new Menu("WConfig", "W Config");
             w.Add(new MenuBool("autoW", "Auto W", true, Player.CharacterName));
-			wrapper.Add(w);
-			
-			var r = new Menu("RConfig", "R Config");
+            wrapper.Add(w);
+
+            var r = new Menu("RConfig", "R Config");
             r.Add(new MenuBool("autoR", "Auto R in shop", true, Player.CharacterName));
-			wrapper.Add(r);
-			
-			var p = new Menu("PConfig", "P Config");
-            p.Add(new MenuBool("focusP", "Focus marked enemy", true, Player.CharacterName));
-			wrapper.Add(p);
-			
-			var farm = new Menu("farm", "Farm");
+            wrapper.Add(r);
+
+            var misc= new Menu("MiscConfig", "Misc");
+            misc.Add(new MenuBool("focusP", "Focus marked enemy", true, Player.CharacterName));
+            wrapper.Add(misc);
+
+            var farm = new Menu("farm", "Farm");
             farm.Add(new MenuBool("farmP", "Attack marked minion first", true, Player.CharacterName));
             farm.Add(new MenuBool("farmQ", "Farm Q", true, Player.CharacterName));
             farm.Add(new MenuBool("jungleE", "Jungle clear E", true, Player.CharacterName));
             farm.Add(new MenuBool("jungleQ", "Jungle clear Q", true, Player.CharacterName));
-			wrapper.Add(farm);
-			Config.Add(wrapper);
-			
-            Game.OnUpdate += Game_OnUpdate;
-            Gapcloser.OnGapcloser += Gapcloser_OnGapcloser;
+            wrapper.Add(farm);
+
+            Config.Add(wrapper);
+
+
+            Game.OnUpdate += Game_OnGameUpdate;
+            Gapcloser.OnGapcloser += Gapcloser_OnGapcloser; ;
             Drawing.OnDraw += Drawing_OnDraw;
-            //Orbwalker.OnAction += Orbwalker_OnAction;
+            //Orbwalking.AfterAttack += afterAttack;
             Interrupter.OnInterrupterSpell += OnInterrupterSpell;
-            
+            //AIBaseClient.OnDoCast += AIBaseClient_OnDoCast;
+            Orbwalker.OnAction += Orbwalker_OnAction;
+            //Orbwalking.BeforeAttack += Orbwalking_BeforeAttack;
         }
 
+        private void Orbwalker_OnAction(object sender, OrbwalkerActionArgs args)
+        {
+            if(args.Type == OrbwalkerType.BeforeAttack && Config[Player.CharacterName]["MiscConfig"].GetValue<MenuBool>("focusP").Enabled && args.Target.HealthPercent > 40)
+            {
+                var orbTarget = args.Target as AIHeroClient;
+                if (!orbTarget.HasBuff("quinnw"))
+                {
+                    var best = GameObjects.EnemyHeroes.FirstOrDefault(enemy => enemy.IsValidTarget() && enemy.InAutoAttackRange() && enemy.HasBuff("quinnw"));
+                    if (best != null)
+                        Orbwalker.ForceTarget = best;
+                }
+            }
+            else if(LaneClear && args.Target.Type == GameObjectType.AIMinionClient && Config[Player.CharacterName]["farm"].GetValue<MenuBool>("farmP").Enabled)
+            {
+                var bestMinion = Cache.GetMinions(Player.Position, Player.AttackRange).FirstOrDefault(minion => minion.IsValidTarget() && minion.InAutoAttackRange() && minion.HasBuff("quinnw"));
+
+                if (bestMinion != null)
+                    Orbwalker.ForceTarget = bestMinion;
+            }
+            
+            
+                var t = TargetSelector.GetTarget(E.Range);
+                if (E.IsReady() && Config[Player.CharacterName]["EConfig"].GetValue<MenuBool>("autoE").Enabled && t.IsValidTarget(E.Range) && t.CountEnemyHeroesInRange(800) < 3)
+                {
+                    if (Combo && Player.Mana > RMANA + EMANA)
+                        E.Cast(t);
+                    else if (Harass && Player.Mana > RMANA + EMANA + QMANA + WMANA && Config[Player.CharacterName]["EConfig"].GetValue<MenuBool>("harassE").Enabled && OktwCommon.CanHarass())
+                    {
+                        E.Cast(t);
+                    }
+                    else if (OktwCommon.GetKsDamage(t, E) > t.Health)
+                        E.Cast(t);
+                }
+                if (Q.IsReady() && t.IsValidTarget(Q.Range))
+                {
+                    if (Combo && Player.Mana > RMANA + QMANA)
+                        CastSpell(Q, t);
+                    else if (Harass && Player.Mana > RMANA + EMANA + QMANA + WMANA && Config[Player.CharacterName]["QConfig"].GetValue<MenuBool>("harassQ").Enabled && OktwCommon.CanHarass())
+                    {
+                        CastSpell(Q, t);
+                    }
+                    else if (OktwCommon.GetKsDamage(t, Q) > t.Health)
+                        CastSpell(Q, t);
+
+                    if (!None && Player.Mana > RMANA + QMANA + EMANA)
+                    {
+                        foreach (var enemy in GameObjects.EnemyHeroes.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                            Q.Cast(enemy);
+                    }
+                }
+            
+            Jungle();
+        }
         
 
-        private void Game_OnUpdate(EventArgs args)
+        
+        private void Game_OnGameUpdate(EventArgs args)
         {
             if (LagFree(1))
                 SetMana();
-            if (LagFree(2) && Q.IsReady() && Config[Player.CharacterName]["qConfig"].GetValue<MenuBool>("autoQ").Enabled)
+            if (LagFree(2) && Q.IsReady() && Config[Player.CharacterName]["QConfig"].GetValue<MenuBool>("autoQ").Enabled)
                 LogicQ();
 
             if (LagFree(4) && R.IsReady() && Config[Player.CharacterName]["RConfig"].GetValue<MenuBool>("autoR").Enabled)
                 LogicR();
+        }
+        private static void OnInterrupterSpell(AIHeroClient sender, Interrupter.InterruptSpellArgs args)
+        {
+            if (E.IsReady() && Config[Player.CharacterName]["EConfig"].GetValue<MenuBool>("Int").Enabled && sender.IsValidTarget(E.Range))
+                E.CastOnUnit(sender);
         }
         private void Jungle()
         {
@@ -113,21 +179,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
             }
         }
-
-        private static void OnInterrupterSpell(AIHeroClient sender, Interrupter.InterruptSpellArgs args)
+        private void Gapcloser_OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
-            if ((E.IsReady() && Config[Player.CharacterName]["EConfig"].GetValue<MenuBool>("Int").Enabled) && sender.IsValidTarget(E.Range)) 
-                E.CastOnUnit(sender);
-        }
-
-       
-
-		private void Gapcloser_OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
-        {
-            if ((E.IsReady() && Config[Player.CharacterName]["EConfig"].GetValue<MenuBool>("AGC").Enabled) && Config[Player.CharacterName]["EConfig"].GetValue<MenuBool>("gap" + sender.CharacterName).Enabled)
-			//Config.Item("gap" + gapcloser.Sender.ChampionName,true).GetValue<bool>())
+            if (E.IsReady() && Config[Player.CharacterName]["EConfig"].GetValue<MenuBool>("AGC").Enabled && Config[Player.CharacterName]["EConfig"]["egap"].GetValue<MenuBool>("gap" + sender.CharacterName).Enabled)
             {
-
+                
                 if (sender.IsValidTarget(E.Range))
                 {
                     E.Cast(args.EndPosition);
@@ -152,7 +208,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     return;
                 if (Combo && Player.Mana > RMANA + QMANA)
                     CastSpell(Q, t);
-                else if ((Harass && Player.Mana > RMANA + EMANA + QMANA + WMANA && Config[Player.CharacterName]["qConfig"].GetValue<MenuBool>("harassQ").Enabled) &&  OktwCommon.CanHarass())
+                else if (Harass && Player.Mana > RMANA + EMANA + QMANA + WMANA && Config[Player.CharacterName]["QConfig"].GetValue<MenuBool>("harassQ").Enabled  && OktwCommon.CanHarass())
                 {
                     CastSpell(Q, t);
                 }
@@ -165,11 +221,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         Q.Cast(enemy);
                 }
             }
-            else if (LaneClear && Config[Player.CharacterName]["qConfig"].GetValue<MenuBool>("farmQ").Enabled)
+            else if (LaneClear && Config[Player.CharacterName]["farm"].GetValue<MenuBool>("farmQ").Enabled)
             {
                 var minionList = Cache.GetMinions(Player.PreviousPosition, Q.Range - 150);
                 var farmPosition = Q.GetCircularFarmLocation(minionList, 150);
-                
+                if (farmPosition.MinionsHit >= 2)
                     Q.Cast(farmPosition.Position);
             }
         }
@@ -186,8 +242,8 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
 
             QMANA = Q.Instance.SData.ManaArray[Math.Max(0, Q.Level - 1)];
-            WMANA = W.Instance.SData.ManaArray[Math.Max(0, Q.Level - 1)];
-            EMANA = E.Instance.SData.ManaArray[Math.Max(0, Q.Level - 1)];
+            WMANA = W.Instance.SData.ManaArray[Math.Max(0, W.Level - 1)];
+            EMANA = E.Instance.SData.ManaArray[Math.Max(0, E.Level - 1)];
 
             if (!R.IsReady())
                 RMANA = WMANA - Player.PARRegenRate * W.Instance.Cooldown;
@@ -197,39 +253,36 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void Drawing_OnDraw(EventArgs args)
         {
-			
-			
             var onlyRdy = Config[Player.CharacterName]["draw"].GetValue<MenuBool>("onlyRdy");
-
             if (Config[Player.CharacterName]["draw"].GetValue<MenuBool>("qRange").Enabled)
             {
                 if (onlyRdy)
                 {
                     if (Q.IsReady())
-                        Render.Circle.DrawCircle(Player.Position, Q.Range, System.Drawing.Color.Cyan, 1);
+                        Render.Circle.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.Cyan, 1);
                 }
                 else
-                   Render.Circle.DrawCircle(Player.Position, Q.Range, System.Drawing.Color.Cyan, 1);
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.Cyan, 1);
             }
-            if (Config[Player.CharacterName]["draw"].GetValue<MenuBool>("wRange").Enabled)
-            {
+             if (Config[Player.CharacterName]["draw"].GetValue<MenuBool>("wRange").Enabled)
+                {
                 if (onlyRdy)
                 {
                     if (W.IsReady())
-                         Render.Circle.DrawCircle(Player.Position, W.Range, System.Drawing.Color.Orange, 1);
+                        Render.Circle.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.Orange, 1);
                 }
                 else
-                    Render.Circle.DrawCircle(Player.Position, W.Range, System.Drawing.Color.Orange, 1);
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.Orange, 1);
             }
             if (Config[Player.CharacterName]["draw"].GetValue<MenuBool>("eRange").Enabled)
             {
                 if (onlyRdy)
                 {
                     if (E.IsReady())
-                        Render.Circle.DrawCircle(Player.Position, E.Range, System.Drawing.Color.Yellow, 1);
+                        Render.Circle.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.Yellow, 1);
                 }
                 else
-                    Render.Circle.DrawCircle(Player.Position, E.Range, System.Drawing.Color.Yellow, 1);
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.Yellow, 1);
             }
         }
     }
