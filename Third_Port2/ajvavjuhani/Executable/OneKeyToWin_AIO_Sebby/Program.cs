@@ -169,7 +169,13 @@ namespace OneKeyToWin_AIO_Sebby
                 case "Jinx":
                     new Champions.Jinx();
                     break;
-		case "KogMaw":
+                case "Malzahar":
+                    new Champions.Malzahar();
+                    break;
+                case "Lux":
+                    new Champions.Lux();
+                    break;
+                case "KogMaw":
                     new Champions.KogMaw();
                     break;
 		case "Quinn":
@@ -180,7 +186,7 @@ namespace OneKeyToWin_AIO_Sebby
                     break;
 
                 case "Vayne":
-                    new Champions.Vaynee();
+                    new Champions.Vayne();
                     break;
 
                 case "Darius":
