@@ -95,7 +95,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         Orbwalker.ForceTarget = best;
                 }
             }
-            else if(LaneClear && args.Target.Type == GameObjectType.AIMinionClient && Config[Player.CharacterName]["farm"].GetValue<MenuBool>("farmP").Enabled)
+            if (LaneClear && args.Target != null && args.Target.Type == GameObjectType.AIMinionClient && Config[Player.CharacterName]["farm"].GetValue<MenuBool>("farmP").Enabled)
             {
                 var bestMinion = Cache.GetMinions(Player.Position, Player.AttackRange).FirstOrDefault(minion => minion.IsValidTarget() && minion.InAutoAttackRange() && minion.HasBuff("quinnw"));
 
