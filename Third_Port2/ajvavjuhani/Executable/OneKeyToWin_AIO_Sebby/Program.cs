@@ -185,8 +185,8 @@ namespace OneKeyToWin_AIO_Sebby
                     new Champions.Corki();
                     break;
 
-                case "Vayne":
-                    new Champions.Vayne();
+                case "Vaynee":
+                    new Champions.Vaynee();
                     break;
 
                 case "Darius":
