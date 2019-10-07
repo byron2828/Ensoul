@@ -40,13 +40,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Champions\Caitlyn.cs" />
-    <Compile Include="Champions\Graves.cs" />
-    <Compile Include="Champions\Jinx.cs" />
-	  <Compile Include="Champions\Vayne.cs" />
-<Compile Include="Champions\Lucian.cs" />
-	  <Compile Include="Champions\Darius.cs" />
- <Compile Include="Champions\Corki.cs" />
+    	<Compile Include="Champions\Caitlyn.cs" />
+    	<Compile Include="Champions\Graves.cs" />
+	<Compile Include="Champions\Jinx.cs" />
+	<Compile Include="Champions\Lux.cs" />
+	<Compile Include="Champions\Malzahar.cs" />
+	<Compile Include="Champions\Vayne.cs" />
+	<Compile Include="Champions\Lucian.cs" />
+	<Compile Include="Champions\Darius.cs" />
+	<Compile Include="Champions\Corki.cs" />
 	<Compile Include="Champions\KogMaw.cs" />
 	<Compile Include="Champions\Quinn.cs" />
 	<Compile Include="Champions\Twitch.cs" />
