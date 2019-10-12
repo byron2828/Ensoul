@@ -366,7 +366,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     LogicE();
                 if (LaneClear && args.Target != null && Config[Player.CharacterName]["farm"].GetValue<MenuBool>("jungleE").Enabled && Player.ManaPercent > Config[Player.CharacterName]["farm"].GetValue<MenuSlider>("JCMana").Value)
                 {
-                    if (E.IsReady() && Cache.GetMinions(Player.PreviousPosition, 700, MinionTeam.Neutral).Any(x => x.NetworkId == args.Target.NetworkId))
+                    if (E.IsReady() && Cache.GetMinions(Player.PreviousPosition, 700, SebbyLib.MinionTeam.Neutral).Any(x => x.NetworkId == args.Target.NetworkId))
                         E.Cast(Game.CursorPosRaw);
                 }
             }
