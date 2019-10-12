@@ -88,6 +88,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if(args.Type == OrbwalkerType.BeforeAttack && Config[Player.CharacterName]["MiscConfig"].GetValue<MenuBool>("focusP").Enabled && args.Target.HealthPercent > 40)
             {
                 var orbTarget = args.Target as AIHeroClient;
+                
                 if (!orbTarget.HasBuff("quinnw"))
                 {
                     var best = GameObjects.EnemyHeroes.FirstOrDefault(enemy => enemy.IsValidTarget() && enemy.InAutoAttackRange() && enemy.HasBuff("quinnw"));
@@ -95,13 +96,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         Orbwalker.ForceTarget = best;
                 }
             }
-            if (LaneClear && args.Target != null && args.Target.Type == GameObjectType.AIMinionClient && Config[Player.CharacterName]["farm"].GetValue<MenuBool>("farmP").Enabled)
-            {
-                var bestMinion = Cache.GetMinions(Player.Position, Player.AttackRange).FirstOrDefault(minion => minion.IsValidTarget() && minion.InAutoAttackRange() && minion.HasBuff("quinnw"));
-
-                if (bestMinion != null)
-                    Orbwalker.ForceTarget = bestMinion;
-            }
+            
             
             
                 var t = TargetSelector.GetTarget(E.Range);
@@ -158,7 +153,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (LaneClear && Player.Mana > RMANA + WMANA + RMANA + WMANA)
             {
-                var mobs = Cache.GetMinions(Player.PreviousPosition, 700, MinionTeam.Neutral);
+                var mobs = Cache.GetMinions(Player.PreviousPosition, 700, SebbyLib.MinionTeam.Neutral);
                 if (mobs.Count > 0)
                 {
                     var mob = mobs[0];
