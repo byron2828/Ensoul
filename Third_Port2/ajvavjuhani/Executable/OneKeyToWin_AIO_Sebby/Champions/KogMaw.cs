@@ -147,7 +147,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (LaneClear && Player.Mana > RMANA + QMANA)
             {
-                var mobs = Cache.GetMinions(Player.PreviousPosition, 650, MinionTeam.Neutral);
+                var mobs = Cache.GetMinions(Player.PreviousPosition, 650, SebbyLib.MinionTeam.Neutral);
                 if (mobs.Count > 0)
                 {
                     var mob = mobs[0];
