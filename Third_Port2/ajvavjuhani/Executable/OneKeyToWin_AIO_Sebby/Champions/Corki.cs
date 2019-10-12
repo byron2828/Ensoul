@@ -212,7 +212,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (Program.LaneClear && !ObjectManager.Player.IsWindingUp && Sheen())
             {
-                var mobs = Cache.GetMinions(Player.PreviousPosition, Q.Range, MinionTeam.Neutral);
+                var mobs = Cache.GetMinions(Player.PreviousPosition, Q.Range, SebbyLib.MinionTeam.Neutral);
                 if (mobs.Count > 0 && Player.Mana > RMANA + WMANA + EMANA + QMANA)
                 {
                     var mob = mobs[0];
