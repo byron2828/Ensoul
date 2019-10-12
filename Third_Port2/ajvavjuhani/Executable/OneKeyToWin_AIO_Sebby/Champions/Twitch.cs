@@ -227,7 +227,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (!Config[Player.CharacterName]["EConfig"].GetValue<MenuBool>("jungleE").Enabled || Player.Mana < RMANA + EMANA || Player.Level == 1)
                 return;
 
-            var mobs = Cache.GetMinions(Player.PreviousPosition, E.Range, MinionTeam.Neutral);
+            var mobs = Cache.GetMinions(Player.PreviousPosition, E.Range, SebbyLib.MinionTeam.Neutral);
             if (mobs.Count > 0)
             {
                 var mob = mobs[0];
