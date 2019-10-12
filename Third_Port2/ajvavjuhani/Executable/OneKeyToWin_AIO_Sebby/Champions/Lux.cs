@@ -390,7 +390,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (LaneClear && Player.Mana > RMANA + WMANA + RMANA + WMANA)
             {
-                var mobs = Cache.GetMinions(Player.PreviousPosition, 600, MinionTeam.Neutral);
+                var mobs = Cache.GetMinions(Player.PreviousPosition, 600, SebbyLib.MinionTeam.All);
                 if (mobs.Count > 0)
                 {
                     var mob = mobs[0];
@@ -410,7 +410,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void KsJungle()
         {
-            var mobs = Cache.GetMinions(Player.PreviousPosition, R.Range, MinionTeam.Neutral);
+            var mobs = Cache.GetMinions(Player.PreviousPosition, R.Range, SebbyLib.MinionTeam.Neutral);
             foreach (var mob in mobs)
             {
                 //debug(mob.BaseSkinName);
