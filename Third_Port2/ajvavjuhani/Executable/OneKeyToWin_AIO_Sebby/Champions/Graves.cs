@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -230,7 +230,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             var farm = Config[Player.CharacterName]["farm"];
             if (LaneClear && Player.ManaPercent > farm.GetValue<MenuSlider>("JCMana").Value)
             {
-                var mobs = Cache.GetMinions(Player.PreviousPosition, 600, MinionTeam.Neutral);
+                var mobs = Cache.GetMinions(Player.PreviousPosition, 600, SebbyLib.MinionTeam.Neutral);
                 if (mobs.Count > 0)
                 {
                     var mob = mobs[0];
