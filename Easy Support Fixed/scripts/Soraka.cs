@@ -4,6 +4,7 @@ using EnsoulSharp.SDK.MenuUI;
 using EnsoulSharp.SDK.MenuUI.Values;
 using EnsoulSharp.SDK.Prediction;
 using EnsoulSharp.SDK.Utility;
+using EnsoulSharp.SDK.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,11 +31,11 @@ namespace Easy_Sup
             E.SetSkillshot(0.4f, 70f, 1750, false,false, SkillshotType.Circle);
 
             LoadMenu();
-            Game.OnUpdate += OnTick;
+            Tick.OnTick += OnUpdate;
             Drawing.OnDraw += OnDraw;
         }
 
-        private static void OnTick(EventArgs args)
+        private static void OnUpdate(EventArgs args)
         {
             if (ObjectManager.Player.IsDead) return;
 

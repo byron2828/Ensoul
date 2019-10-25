@@ -2,6 +2,7 @@
 using EnsoulSharp.SDK;
 using EnsoulSharp.SDK.MenuUI;
 using EnsoulSharp.SDK.MenuUI.Values;
+using EnsoulSharp.SDK.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Easy_Sup.scripts
             W.SetTargetted(0.5f, float.MaxValue);
 
             CreateMenu();
-            Game.OnUpdate += OnUpdate;
+            Tick.OnTick += OnUpdate;
             Gapcloser.OnGapcloser += OnGapcloser;
         }
 

@@ -4,6 +4,7 @@ using EnsoulSharp.SDK.MenuUI;
 using EnsoulSharp.SDK.Prediction;
 using EnsoulSharp.SDK.Utility;
 using SPrediction;
+using EnsoulSharp.SDK.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Easy_Sup.scripts
             R.SetSkillshot(0.25f, 100f, float.MaxValue, false, false, SkillshotType.Circle);
 
             CreateMenu();
-            Game.OnTick += OnTick;
+            Tick.OnTick += OnUpdate;
             Drawing.OnDraw += OnDraw;
         }
 
@@ -70,7 +71,7 @@ namespace Easy_Sup.scripts
 
         }
 
-        private static void OnTick(EventArgs args)
+        private static void OnUpdate(EventArgs args)
         {
             if (Menubase.Pyke_KS.R.Enabled)
                 KS();
@@ -95,7 +96,7 @@ namespace Easy_Sup.scripts
             var t = al.FirstOrDefault(x => x.IsValidTarget(R.Range));
             if (t != null && !ObjectManager.Player.IsRecalling())
             {
-                if (Orbwalker.ActiveMode != OrbwalkerMode.Combo && !t.IsDead && !t.IsZombie && t.IsVisible && t.IsHPBarRendered)
+                if (Orbwalker.ActiveMode != OrbwalkerMode.Combo && !t.IsDead && t.IsVisible && t.IsHPBarRendered)
                 {
                     R.SPredictionCast(t, HitChance.Medium);
                 }
@@ -223,7 +224,7 @@ namespace Easy_Sup.scripts
                     {
                         return;
                     }
-                    if(!rt.IsDead && !rt.IsZombie && rt.IsVisible && rt.IsHPBarRendered)
+                    if(!rt.IsDead && rt.IsVisible && rt.IsHPBarRendered)
                     {
                         R.SPredictionCast(rt, HitChance.High);
                     }

@@ -4,6 +4,7 @@ using EnsoulSharp.SDK.MenuUI;
 using EnsoulSharp.SDK.MenuUI.Values;
 using EnsoulSharp.SDK.Prediction;
 using EnsoulSharp.SDK.Utility;
+using EnsoulSharp.SDK.Events;
 using SharpDX;
 using SPrediction;
 using System;
@@ -35,7 +36,7 @@ namespace Easy_Sup.scripts
 
             CreateMenu();
 
-            Game.OnUpdate += BlitzOnUpdate;
+            Tick.OnTick += BlitzOnUpdate;
             Drawing.OnDraw += OnDraw;
             Interrupter.OnInterrupterSpell += Interrupter2_OnInterruptableTarget;
         }

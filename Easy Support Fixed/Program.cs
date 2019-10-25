@@ -51,33 +51,33 @@ namespace Easy_Sup
 
        private static void OnGameLoad()
 {
- 	Chat.Print("Supported Champions: Alistar, Blitz, Lux, Morgana, Pyke, Soraka, Thresh");
-            Chat.Print("SPrediction Port By Mask");
+ 	Game.Print("Supported Champions: Alistar, Blitz, Lux, Morgana, Pyke, Soraka, Thresh");
+            Game.Print("SPrediction Port By Mask");
             if (ObjectManager.Player.CharacterName == "Soraka")
             {
                 Soraka.Load();
-                Chat.Print("Soraka Script Load");
+                Game.Print("Soraka Script Load");
             }
             else if (ObjectManager.Player.CharacterName == "Blitzcrank")
             {
                 Blitz.BlitzOnLoad();
-                Chat.Print("Blitzcrank Script Load");
-                Chat.Print("This script is a Port of KurisuBlitz (Code of Kurisu)");
+                Game.Print("Blitzcrank Script Load");
+                Game.Print("This script is a Port of KurisuBlitz (Code of Kurisu)");
             }
             else if (ObjectManager.Player.CharacterName == "Lux")
             {
                 Lux.Load();
-                Chat.Print("Partial Port of ChewyMoon Lux Load");
+                Game.Print("Partial Port of ChewyMoon Lux Load");
             }
             else if (ObjectManager.Player.CharacterName == "Pyke")
             {
                 Pyke.On_Load();
-                Chat.Print("011110001.Pyke Load");
+                Game.Print("011110001.Pyke Load");
             }
             else if (ObjectManager.Player.CharacterName == "Thresh")
             {
                 Thresh.OnLoad();
-                Chat.Print("011110001.Thresh Load");
+                Game.Print("011110001.Thresh Load");
             }
             else if (ObjectManager.Player.CharacterName == "Alistar")
             {
@@ -86,8 +86,8 @@ namespace Easy_Sup
             else if(ObjectManager.Player.CharacterName == "Morgana")
             {
                 Morgana.OnLoad();
-                Chat.Print("Morgana Script Load");
-                Chat.Print("This script is Fixed By Memory");
+                Game.Print("Morgana Script Load");
+                Game.Print("This script is Fixed By Memory");
                 Notifications.Add(new Notification("Easy Support Fixed By Memory", "Credit  Memory"));
             }
         }

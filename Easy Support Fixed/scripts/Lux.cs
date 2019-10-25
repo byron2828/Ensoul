@@ -3,6 +3,7 @@ using EnsoulSharp.SDK;
 using EnsoulSharp.SDK.MenuUI;
 using EnsoulSharp.SDK.MenuUI.Values;
 using EnsoulSharp.SDK.Prediction;
+using EnsoulSharp.SDK.Events;
 using SharpDX;
 using SPrediction;
 using System;
@@ -38,7 +39,7 @@ namespace Easy_Sup.scripts
 
             CreateMenu();
 
-            Game.OnUpdate += Game_OnGameUpdate;
+            Tick.OnTick += OnUpdate;
             Gapcloser.OnGapcloser += AntiGapcloserOnOnEnemyGapcloser;
 
             GameObject.OnCreate += delegate (GameObject sender, EventArgs args)
@@ -303,7 +304,7 @@ namespace Easy_Sup.scripts
 
             if (useW && W.IsReady() && ObjectManager.Player.HealthPercent <= Menubase.lux_w.Wper)
             {
-                W.Cast(Game.CursorPosRaw);
+                W.Cast(Game.CursorPos);
             }
 
             if (useE && E.IsReady() && !EActivated)
@@ -396,7 +397,7 @@ namespace Easy_Sup.scripts
             }
         }
 
-        private static void Game_OnGameUpdate(EventArgs args)
+        private static void OnUpdate(EventArgs args)
         {
             switch (Orbwalker.ActiveMode)
             {
@@ -432,7 +433,6 @@ namespace Easy_Sup.scripts
             foreach (var enemy in
                 ObjectManager.Get<AIHeroClient>()
                     .Where(x => x.IsValidTarget())
-                    .Where(x => !x.IsZombie)
                     .Where(x => !x.IsDead)
                     .Where(enemy => R.GetDamage(enemy) > enemy.Health))
             {

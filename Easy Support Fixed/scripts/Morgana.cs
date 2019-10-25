@@ -5,6 +5,7 @@ using EnsoulSharp.SDK.MenuUI;
 using EnsoulSharp.SDK.MenuUI.Values;
 using EnsoulSharp.SDK.Prediction;
 using EnsoulSharp.SDK.Utility;
+using EnsoulSharp.SDK.Events;
 using SharpDX;
 using SPrediction;
 using System;
@@ -78,7 +79,7 @@ namespace Easy_Sup.scripts
 
             CreateMenu();
             Drawing.OnDraw += Drawing_OnDraw;
-            Game.OnUpdate += Game_OnGameUpdate;
+            Tick.OnTick += OnUpdate;
             Gapcloser.OnGapcloser += AntiGapcloser_OnEnemyGapcloser;
             try
             {
@@ -137,7 +138,7 @@ namespace Easy_Sup.scripts
         }
 
 
-        private static void Game_OnGameUpdate(EventArgs args)
+        private static void OnUpdate(EventArgs args)
         {
             try
             {
