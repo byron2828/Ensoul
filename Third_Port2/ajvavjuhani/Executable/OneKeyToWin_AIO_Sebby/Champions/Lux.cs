@@ -7,6 +7,7 @@ using EnsoulSharp.SDK;
 using EnsoulSharp.SDK.MenuUI.Values;
 using EnsoulSharp.SDK.Prediction;
 using EnsoulSharp.SDK.Utility;
+using EnsoulSharp.SDK.Events;
 
 using SebbyLib;
 
@@ -106,7 +107,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             Config.Add(wrapper);
 
-            Game.OnUpdate += Game_OnGameUpdate;
+            Tick.OnTick += OnUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
             Drawing.OnEndScene += Drawing_OnEndScene;
             //Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
@@ -131,7 +132,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             
         }
 
-        private void Game_OnGameUpdate(EventArgs args)
+        private void OnUpdate(EventArgs args)
         {
             if (R.IsReady() )
             {

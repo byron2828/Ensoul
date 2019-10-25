@@ -6,6 +6,7 @@ using EnsoulSharp.SDK;
 using EnsoulSharp.SDK.MenuUI.Values;
 using EnsoulSharp.SDK.Prediction;
 using EnsoulSharp.SDK.Utility;
+using EnsoulSharp.SDK.Events;
 
 using SebbyLib;
 
@@ -91,7 +92,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             Config.Add(wrapper);
 
-            Game.OnUpdate += Game_OnGameUpdate;
+            Tick.OnTick += OnUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
             Interrupter.OnInterrupterSpell += OnInterrupterSpell;
             Gapcloser.OnGapcloser += Gapcloser_OnGapcloser;
@@ -160,7 +161,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private void Game_OnGameUpdate(EventArgs args)
+        private void OnUpdate(EventArgs args)
         {
             if (Player.IsCastingImporantSpell() || Game.Time - Rtime < 2.5 || Player.HasBuff("malzaharrsound"))
             {

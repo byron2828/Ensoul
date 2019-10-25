@@ -7,6 +7,7 @@ using EnsoulSharp.SDK;
 using EnsoulSharp.SDK.MenuUI.Values;
 using EnsoulSharp.SDK.Prediction;
 using EnsoulSharp.SDK.Utility;
+using EnsoulSharp.SDK.Events;
 
 using SebbyLib;
 
@@ -80,7 +81,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             Dash = new Core.OKTWdash(E);
 
             Drawing.OnDraw += Drawing_OnDraw;
-            Game.OnUpdate += Game_OnUpdate;
+            Tick.OnTick += OnUpdate;
             Gapcloser.OnGapcloser += Gapcloser_OnGapcloser;
             Orbwalker.OnAction += Orbwalker_OnAction;
         }
@@ -318,7 +319,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private void Game_OnUpdate(EventArgs args)
+        private void OnUpdate(EventArgs args)
         {
             if (Config[Player.CharacterName]["RConfig"].GetValue<MenuKeyBind>("useR").Active && R.IsReady())
             {
@@ -367,7 +368,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (LaneClear && args.Target != null && Config[Player.CharacterName]["farm"].GetValue<MenuBool>("jungleE").Enabled && Player.ManaPercent > Config[Player.CharacterName]["farm"].GetValue<MenuSlider>("JCMana").Value)
                 {
                     if (E.IsReady() && Cache.GetMinions(Player.PreviousPosition, 700, SebbyLib.MinionTeam.Neutral).Any(x => x.NetworkId == args.Target.NetworkId))
-                        E.Cast(Game.CursorPosRaw);
+                        E.Cast(Game.CursorPos);
                 }
             }
         }

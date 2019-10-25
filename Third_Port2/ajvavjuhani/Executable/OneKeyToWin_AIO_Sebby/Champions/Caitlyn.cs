@@ -7,6 +7,7 @@ using EnsoulSharp.SDK;
 using EnsoulSharp.SDK.MenuUI.Values;
 using EnsoulSharp.SDK.Prediction;
 using EnsoulSharp.SDK.Utility;
+using EnsoulSharp.SDK.Events;
 
 using SebbyLib;
 
@@ -98,7 +99,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             Config.Add(wrapper);
 
             Drawing.OnDraw += Drawing_OnDraw;
-            Game.OnUpdate += Game_OnUpdate;
+            Tick.OnTick += OnUpdate;
             AIBaseClient.OnDoCast += AIBaseClient_OnDoCast;
             Spellbook.OnCastSpell += Spellbook_OnCastSpell;
             Gapcloser.OnGapcloser += Gapcloser_OnGapcloser;
@@ -142,7 +143,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     if (EmodeGC == 0)
                         E.Cast(args.EndPosition);
                     else if (EmodeGC == 1)
-                        E.Cast(Game.CursorPosRaw);
+                        E.Cast(Game.CursorPos);
                     else
                         E.Cast(sender.PreviousPosition);
                 }
@@ -229,7 +230,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private void Game_OnUpdate(EventArgs args)
+        private void OnUpdate(EventArgs args)
         {
             if (Player.IsRecalling())
                 return;
@@ -334,14 +335,14 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         var points = OktwCommon.CirclePoints(8, W.Range, Player.Position);
                         foreach (var point in points)
                         {
-                            if (NavMesh.IsWallOfGrass(point, 0) || point.IsUnderEnemyTurret())
-                            {
+                            
+                            
                                 if (!OktwCommon.CirclePoints(8, 150, point).Any(x => x.IsWall()))
                                 {
                                     W.Cast(point);
                                     return;
                                 }
-                            }
+                            
                         }
                     }
                 }
@@ -396,7 +397,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             if (e.GetValue<MenuKeyBind>("useE").Active)
             {
-                E.Cast(Player.PreviousPosition - (Game.CursorPosRaw - Player.PreviousPosition), true);
+                E.Cast(Player.PreviousPosition - (Game.CursorPos - Player.PreviousPosition), true);
             }
         }
 

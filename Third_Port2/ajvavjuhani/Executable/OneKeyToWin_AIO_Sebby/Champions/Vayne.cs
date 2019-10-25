@@ -8,6 +8,7 @@ using EnsoulSharp.SDK;
 using EnsoulSharp.SDK.MenuUI.Values;
 using EnsoulSharp.SDK.Prediction;
 using EnsoulSharp.SDK.Utility;
+using EnsoulSharp.SDK.Events;
 
 using SebbyLib;
 
@@ -79,7 +80,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             Config.Add(wrapper);
             Dash = new Core.OKTWdash(Q);
             Drawing.OnDraw += Drawing_OnDraw;
-            Game.OnUpdate += Game_OnGameUpdate;
+            Tick.OnTick += OnUpdate;
             Gapcloser.OnGapcloser += Gapcloser_OnGapcloser;
             Orbwalker.OnAction += Orbwalker_OnAction;
             Interrupter.OnInterrupterSpell += OnInterrupterSpell;
@@ -164,7 +165,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             if (m != null && Q.IsReady() && LaneClear && Config[Player.CharacterName]["farm"].GetValue<MenuBool>("farmQ").Enabled)
             {
-                var dashPosition = Player.Position.Extend(Game.CursorPosRaw, Q.Range);
+                var dashPosition = Player.Position.Extend(Game.CursorPos, Q.Range);
                 if (!Dash.IsGoodPosition(dashPosition))
                     return;
                 
@@ -191,10 +192,10 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             return target.MaxHealth * (4.5 + W.Level * 1.5) * 0.01;
         }
 
-        private void Game_OnGameUpdate(EventArgs args)
+        private void OnUpdate(EventArgs args)
         {
             var e = Config[Player.CharacterName]["EConfig"];
-            var dashPosition = Player.Position.Extend(Game.CursorPosRaw, Q.Range);
+            var dashPosition = Player.Position.Extend(Game.CursorPos, Q.Range);
 
             if (E.IsReady())
             {
@@ -228,7 +229,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     var t = TargetSelector.GetTarget(900);
 
-                    if (t.IsValidTarget() && !t.InAutoAttackRange() && t.Position.Distance(Game.CursorPosRaw) < t.Position.Distance(Player.Position) &&  !t.IsFacing(Player))
+                    if (t.IsValidTarget() && !t.InAutoAttackRange() && t.Position.Distance(Game.CursorPos) < t.Position.Distance(Player.Position) &&  !t.IsFacing(Player))
                     {
                         var dashPos = Dash.CastDash();
                         if (!dashPos.IsZero)

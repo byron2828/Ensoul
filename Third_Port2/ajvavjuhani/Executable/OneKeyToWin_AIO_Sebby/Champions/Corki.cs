@@ -5,6 +5,7 @@ using EnsoulSharp.SDK;
 using EnsoulSharp.SDK.MenuUI.Values;
 using EnsoulSharp.SDK.Prediction;
 using EnsoulSharp.SDK.Utility;
+using EnsoulSharp.SDK.Events;
 using System.Windows.Forms;
 
 using SebbyLib;
@@ -66,7 +67,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             wrapper.Add(farm);
 
             Config.Add(wrapper);
-            Game.OnUpdate += Game_OnGameUpdate;
+            Tick.OnTick += OnUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
             Orbwalker.OnAction += Orbwalker_OnAction;
         }
@@ -84,7 +85,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private void Game_OnGameUpdate(EventArgs args)
+        private void OnUpdate(EventArgs args)
         {
             if (LagFree(0))
             {
@@ -172,9 +173,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private void LogicW()
         {
-            var dashPosition = Player.Position.Extend(Game.CursorPosRaw, W.Range);
+            var dashPosition = Player.Position.Extend(Game.CursorPos, W.Range);
 
-            if (Game.CursorPosRaw.Distance(Player.Position) > Player.AttackRange + Player.BoundingRadius * 2 && Config[Player.CharacterName]["WConfig"].GetValue<MenuBool>("nktdE").Enabled && Player.Mana > RMANA + WMANA - 10)
+            if (Game.CursorPos.Distance(Player.Position) > Player.AttackRange + Player.BoundingRadius * 2 && Config[Player.CharacterName]["WConfig"].GetValue<MenuBool>("nktdE").Enabled && Player.Mana > RMANA + WMANA - 10)
             {
                 W.Cast(dashPosition);
             }
@@ -305,7 +306,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             var onlyRdy = Config[Player.CharacterName]["draw"].GetValue<MenuBool>("onlyRdy");
             if (Config[Player.CharacterName]["WConfig"].GetValue<MenuBool>("nktdE").Enabled)
             {
-                if (Game.CursorPosRaw.Distance(Player.Position) > Player.AttackRange + Player.BoundingRadius * 2)
+                if (Game.CursorPos.Distance(Player.Position) > Player.AttackRange + Player.BoundingRadius * 2)
                     drawText("dash: ON ", Player.Position, System.Drawing.Color.Red);
                 else
                     drawText("dash: OFF ", Player.Position, System.Drawing.Color.GreenYellow);
