@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{83228165-C995-49EA-970D-D5A0589DA730}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>SharpShooter</RootNamespace>
+    <AssemblyName>SharpShooter</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+    <PreBuildEvent />
+    <PostBuildEvent />
+    <OutputPath>bin\Release</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EnsoulSharp.SDK">
+      <HintPath>C:\Users\adnan\Downloads\EnsoulSharp\System\EnsoulSharp.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="EnsoulSharp.Wrapper">
+      <HintPath>C:\Users\adnan\Downloads\EnsoulSharp\System\EnsoulSharp.Wrapper.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>C:\Users\adnan\Downloads\EnsoulSharp\System\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MyBase\MyChampions.cs" />
+    <Compile Include="MyBase\MyLogic.cs" />
+    <Compile Include="MyCommon\MyBlockSpellData.cs" />
+    <Compile Include="MyCommon\MyBlockSpellDataBase.cs" />
+    <Compile Include="MyCommon\MyDamageIndicator.cs" />
+    <Compile Include="MyCommon\MyEvadeManager.cs" />
+    <Compile Include="MyCommon\MyExtraManager.cs" />
+    <Compile Include="MyCommon\MyManaManager.cs" />
+    <Compile Include="MyCommon\MyMenuExtensions.cs" />
+    <Compile Include="MyCommon\MyTargetSelector.cs" />
+    <Compile Include="MyLibrary\CPrediction.cs" />
+    <Compile Include="MyLoader.cs" />
+    <Compile Include="MyPlugin\Ashe.cs" />
+    <Compile Include="MyPlugin\Caitlyn.cs" />
+    <Compile Include="MyPlugin\Corki.cs" />
+    <Compile Include="MyPlugin\Draven.cs" />
+    <Compile Include="MyPlugin\Ezreal.cs" />
+    <Compile Include="MyPlugin\KogMaw.cs" />
+    <Compile Include="MyPlugin\Lucian.cs" />
+    <Compile Include="MyPlugin\Quinn.cs" />
+    <Compile Include="MyPlugin\Tristana.cs" />
+    <Compile Include="MyPlugin\Twitch.cs" />
+    <Compile Include="MyPlugin\Varus.cs" />
+    <Compile Include="MyPlugin\Vayne.cs" />
+    <Compile Include="MyPlugin\Xayah.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TODO.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
