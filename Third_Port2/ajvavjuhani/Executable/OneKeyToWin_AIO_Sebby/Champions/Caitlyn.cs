@@ -335,14 +335,14 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         var points = OktwCommon.CirclePoints(8, W.Range, Player.Position);
                         foreach (var point in points)
                         {
-                            
-                            
+                            if (NavMesh.IsWallOfType(point, CollisionFlags.Wall, 0) || NavMesh.IsWallOfType(point, CollisionFlags.Grass, 0) || point.IsUnderEnemyTurret())
+                            {
                                 if (!OktwCommon.CirclePoints(8, 150, point).Any(x => x.IsWall()))
                                 {
                                     W.Cast(point);
                                     return;
                                 }
-                            
+                            }
                         }
                     }
                 }
