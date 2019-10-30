@@ -1,4 +1,0 @@
-﻿1. AntiGapcloser logic
-2. Fix Spell Damage
-3. unknow issue
-4. Add Kaisa, Jayce
